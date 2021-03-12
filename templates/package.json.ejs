@@ -1,0 +1,41 @@
+{
+    "name": "<%=projectName%>",
+    "version": "<%=version%>",
+    "description": "a projet inited by my-cli",
+    "main": "index.js",
+    "scripts": {
+      "start":"NODE_ENV=development webpack serve", 
+      "build":"./node_modules/.bin/webpack --config webpack.config.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "<%=author%>",
+    "license": "ISC",
+    "dependencies": {
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "react-router": "^4.3.1",
+        "react-router-dom": "^4.3.1",
+        "react-redux": "^7.2.2",
+        "redux": "^4.0.5",
+        "@babel/runtime": "^7.12.5",
+        "core-js": "^3.8.2"
+    },
+    "devDependencies":{
+        "@babel/cli": "^7.12.10",
+        "@babel/core": "^7.12.10",
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
+        "@babel/plugin-transform-runtime": "^7.12.10",
+        "@babel/preset-env": "^7.12.11",
+        "@babel/preset-react": "^7.12.10",
+        "babel-loader": "^8.2.2",
+        "css-loader": "^5.0.1",
+        "style-loader": "^2.0.0",
+        "html-webpack-plugin": "^4.5.1",
+        "less": "^4.1.0",
+        "less-loader": "^7.2.1",
+        "webpack": "^5.14.0",
+        "webpack-cli": "^4.3.1",
+        "webpack-dev-server": "^3.11.2"
+    }
+
+}
