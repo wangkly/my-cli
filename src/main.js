@@ -5,8 +5,6 @@ const chalk = require('chalk');
 var inquirer = require('inquirer')
 const execa = require('execa')
 const Listr = require('listr')
-// const {spawn, exec} = require("child_process")
-// import {projectInstall} from 'pkg-install'
 
 import createProject from './create-project'
 
@@ -25,12 +23,11 @@ program.command('init <name>').description('create a project with the name given
       type:'confirm',
       name:'install',
       message:'would you want to auto install dependencys?',
-      default:false
+      default:true
     }
   ]
   
-  inquirer.prompt(questions).then(answers=>{
-    // console.log('answers===>',answers)
+  inquirer.prompt(questions).then(answers => {
     let {template,install} = answers;
 
       // exec('npm install',{cwd:path.resolve(process.cwd(),projectName)},()=>{
@@ -38,7 +35,6 @@ program.command('init <name>').description('create a project with the name given
       // })
 
       // spawn('npm',['install'],{cwd:path.resolve(process.cwd(),projectName)}).stdout.pipe(process.stdout)
-
       /******* 使用pkg-install 安装依赖************/
       // (async()=>{
       //   const stdout = await projectInstall({
@@ -52,16 +48,19 @@ program.command('init <name>').description('create a project with the name given
       /*********使用listr execa 安装依赖*********** */
       const tasks = new Listr([
         {
-          title:'init project folder,create files',
+          title:'init project, create folder & files',
           task:(ctx,task)=>{
             createProject(projectName,template,(err)=>{
               if(err){
-                console.log('create project failed!!！')
+                console.log(chalk.red(`create project failed!!！err:${err}`))
               }
             })
           }
         },
-        { 
+      ])
+
+      if(install == true){
+        tasks.add({ 
           title:'Install package dependencies with yarn',
           task:(ctx, task) => execa('yarn',{
             cwd:path.resolve(process.cwd(),projectName),
@@ -69,23 +68,19 @@ program.command('init <name>').description('create a project with the name given
             ctx.yarn = false;
             task.skip('yarn is not availablle ,install via npm install')
           })
-        },
-        {
+        }).add({
           title:'Install package dependencies with npm ',
           enabled: ctx => ctx.yarn === false,
           task:() => execa('npm', ['install'],{
             cwd:path.resolve(process.cwd(),projectName),
           })
-        },
-        {
-          title:'all work done',
-          task:(ctx,task)=>{
-          }
-        }
-      ])
+        })
+      }
 
       tasks.run().catch(err=>{
-        console.log(err)
+        console.log(chalk.red(`listr task run err:${err}`))
+      }).finally(()=>{
+        chalk.green('all done ,have a nice day!')
       })
 
   })
@@ -107,15 +102,7 @@ program.command('init <name>').description('create a project with the name given
 
 //parse 要放到command下面执行
 program.parse(process.argv);
-const options = program.opts();
-// console.log(chalk.blue('hello , my-cli'))
-console.log(chalk.green(JSON.stringify(options)))
+// const options = program.opts();
 
-
-// if(options.name){
-//     console.log('name===>',options.name)
-//     console.log(`Current directory: ${process.cwd()}`);
-//     const currentDir = process.cwd()
-//     fs.writeFileSync(path.resolve(currentDir,options.name),options.content)
-// }
+// console.log(chalk.green(JSON.stringify(options)))
 

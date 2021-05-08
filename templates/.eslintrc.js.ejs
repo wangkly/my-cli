@@ -1,0 +1,32 @@
+module.exports = {
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        <%_ if(type == 'typescript'){_%>
+        "plugin:@typescript-eslint/recommended",
+        <%_} _%>
+        "prettier",
+    ],
+    <%_ if(type == 'typescript'){_%>
+    "parser": "@typescript-eslint/parser",
+    <%_} _%>
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        <%_ if(type == 'typescript'){_%>
+        "@typescript-eslint",
+        <%_} _%>
+    ],
+    "rules": {
+    }
+};

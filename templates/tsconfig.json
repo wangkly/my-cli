@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "outDir": "./build/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "ES6",
+        "target": "ES6",
+        "jsx": "react",
+        "allowJs": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "paths": {
+            "services":["src/web_modules/services"],
+        }
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "./node_modules",
+        "./node_modules/*",
+        "./node_modules/@types/node/index.d.ts",
+    ]
+}

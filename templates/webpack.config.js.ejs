@@ -1,6 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const webpack  = require('webpack')
 module.exports={
     optimization:{
         minimize: false,
@@ -16,18 +16,20 @@ module.exports={
         }
     },
     mode:'development',
-    entry:'./src/index.js',
+    devtool:'source-map',
+    entry:<%_ if(type == 'typescript'){ %> './src/index.tsx', <%}else{%> './src/index.js',<%}%> 
     output:{
         filename:'[hash:8]-bundle.js',
         path:path.resolve(__dirname,'dist'),
-        chunkFilename:'[name]-[hash:8].js'
+        chunkFilename:'[name]-[hash:8].js',
+        publicPath:'http://localhost:3000/'
     },
     module:{
         rules:[
             {
-                test:/\.js/,
+                test:<%_ if(type == 'typescript'){ %> /\.tsx?$/, <%}else{%> /\.js/,<%}%>
                 exclude:/node_modules/,
-                use:["babel-loader"]
+                use:["babel-loader" <%if(type == 'typescript'){_%> ,"ts-loader" <%_}_%> ]
             },
             {
                 test:/.less/,
@@ -35,7 +37,15 @@ module.exports={
             }
         ]
     },
+    resolve: {
+        modules: [path.resolve(__dirname, "src/web_modules"), "node_modules"],
+        alias:{
+          "@type":path.resolve(__dirname,"src/@type")
+        },
+        extensions: ['.ts', '.tsx','.js', '.json'],
+    },
     plugins:[
+        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
             filename:'index.html',
             template:'./index.ejs'

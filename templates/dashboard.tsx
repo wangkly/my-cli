@@ -1,10 +1,11 @@
 import React,{FC,} from 'react'
 import {useImmer} from 'use-immer'
 import {useDispatch,useSelector} from 'react-redux'
+import { RootState } from './store'
 
-const Dashboard= ()=> {
+const Dashboard:FC = ()=> {
 
-    let count = useSelector((state) => state.countReducer.count)
+    let count = useSelector((state:RootState) => state.countReducer.count)
     let dispatch = useDispatch()
 
     let [state,updateState] = useImmer({
@@ -30,5 +31,4 @@ const Dashboard= ()=> {
         </div>
     )
 }
-
 export default Dashboard

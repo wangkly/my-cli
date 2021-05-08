@@ -6,8 +6,7 @@ import Dashboard from './dashboard'
 import store from './store';
 import '../style/index.less'
 
-
-const App = () => {
+const App: React.FC = () => {
     return (
         <Provider store={store}>
             <Router>
