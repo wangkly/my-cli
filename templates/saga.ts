@@ -6,7 +6,7 @@ interface Action{
 }
 
 function *countLog(action:Action){
-    console.log(`count changed value:${action.payload.value}`)
+    console.log(`count changed action:${action}`)
     yield put({...action,type:'increase'})
 }
 

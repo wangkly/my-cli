@@ -11,7 +11,7 @@ const Dashboard= ()=> {
         value:''
     })
 
-    const handleTextChange = (e: any) => {
+    const handleTextChange = (e) => {
         updateState((draft) => {
             draft.value = e.target.value;
         });
