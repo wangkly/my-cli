@@ -21,6 +21,12 @@ program.command('init <name>').description('create a project with the name given
     },
     {
       type:'confirm',
+      name:'toolkit',
+      message:'would you want to use @reduxjs/toolkit ?',
+      default:true
+    },
+    {
+      type:'confirm',
       name:'install',
       message:'would you want to auto install dependencys?',
       default:true
@@ -28,7 +34,7 @@ program.command('init <name>').description('create a project with the name given
   ]
   
   inquirer.prompt(questions).then(answers => {
-    let {template,install} = answers;
+    let {template,toolkit,install} = answers;
 
       // exec('npm install',{cwd:path.resolve(process.cwd(),projectName)},()=>{
       //   console.log(`work complated`)
@@ -50,7 +56,7 @@ program.command('init <name>').description('create a project with the name given
         {
           title:'init project, create folder & files',
           task:(ctx,task)=>{
-            createProject(projectName,template,(err)=>{
+            createProject(projectName,template,toolkit,(err)=>{
               if(err){
                 console.log(chalk.red(`create project failed!!！err:${err}`))
               }

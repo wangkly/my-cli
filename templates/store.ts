@@ -4,14 +4,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import mySaga from './saga'
 
 
-import countReducer from './reducers/count_reducer';
+import counter from './reducers/count_reducer';
 
 export interface RootState {
-    countReducer: any
+    counter: any
 }
 
 const rootReducer = combineReducers({
-    countReducer,
+    counter,
 })
 
 const sageMiddleware = createSagaMiddleware();

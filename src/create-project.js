@@ -5,7 +5,7 @@ import chalk from 'chalk'
 import os from 'os'
 
 
-export default function createProject(projectName,type,callback){
+export default function createProject(projectName,type,toolkit,callback){
     let currentDir = process.cwd()
     let workSpace = path.resolve(currentDir,projectName);
     fs.mkdir(workSpace,{recursive:true},(err)=>{
@@ -17,7 +17,7 @@ export default function createProject(projectName,type,callback){
         let userInfo = os.userInfo();
         let {username} = userInfo;
         //创建package.json
-        ejs.renderFile(path.resolve(__dirname,'../templates/package.json.ejs'),{projectName,type,version:'1.1.1',author:username||''},(err,str)=>{
+        ejs.renderFile(path.resolve(__dirname,'../templates/package.json.ejs'),{projectName,type,version:'1.1.1',author:username||'',toolkit},(err,str)=>{
             if(err){
                 console.log(chalk.red(`create package.json failed, err:${err}`))
             }else{
@@ -56,20 +56,46 @@ export default function createProject(projectName,type,callback){
             //index.tsx
             fs.createReadStream(path.resolve(__dirname,'../templates/index.tsx'))
                 .pipe(fs.createWriteStream(path.resolve(workSpace,'src/index.tsx')))
-            //store.ts
-            fs.createReadStream(path.resolve(__dirname,'../templates/store.ts'))
-            .pipe(fs.createWriteStream(path.resolve(workSpace,'src/store.ts')))
-            //saga.ts
-            fs.createReadStream(path.resolve(__dirname,'../templates/saga.ts'))
-            .pipe(fs.createWriteStream(path.resolve(workSpace,'src/saga.ts')))
 
-            fs.mkdir(path.resolve(workSpace,'src/reducers'),(err)=>{
-                if(!err){
-                    //count_reducer.ts
-                    fs.createReadStream(path.resolve(__dirname,'../templates/count_reducer.ts'))
-                    .pipe(fs.createWriteStream(path.resolve(workSpace,'src/reducers/count_reducer.ts')))  
-                }
-            })
+            //是否使用@reduxjs/toolkit    
+            if(toolkit){
+                fs.createReadStream(path.resolve(__dirname,'../templates/store-tookit.ts'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/store.ts')))
+
+                fs.mkdir(path.resolve(workSpace,'src/reducers'),(err)=>{
+                    if(!err){
+                        //count_reducer.ts
+                        fs.createReadStream(path.resolve(__dirname,'../templates/count.ts'))
+                        .pipe(fs.createWriteStream(path.resolve(workSpace,'src/reducers/count.ts')))  
+                    }
+                })
+
+                fs.createReadStream(path.resolve(__dirname,'../templates/hooks.ts'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/hooks.ts')))
+
+
+                //saga.ts
+                fs.createReadStream(path.resolve(__dirname,'../templates/saga-toolkit.ts'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/saga.ts')))
+
+            }else{
+                //store.ts
+                fs.createReadStream(path.resolve(__dirname,'../templates/store.ts'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/store.ts')))
+
+                fs.mkdir(path.resolve(workSpace,'src/reducers'),(err)=>{
+                    if(!err){
+                        //count_reducer.ts
+                        fs.createReadStream(path.resolve(__dirname,'../templates/count_reducer.ts'))
+                        .pipe(fs.createWriteStream(path.resolve(workSpace,'src/reducers/count_reducer.ts')))  
+                    }
+                })
+
+                //saga.ts
+                fs.createReadStream(path.resolve(__dirname,'../templates/saga.ts'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/saga.ts')))
+
+            }    
 
             //创建dashboard.tsx
             fs.createReadStream(path.resolve(__dirname,'../templates/dashboard.tsx'))
@@ -80,20 +106,38 @@ export default function createProject(projectName,type,callback){
             fs.createReadStream(path.resolve(__dirname,'../templates/index.js'))
                 .pipe(fs.createWriteStream(path.resolve(workSpace,'src/index.js')))
 
-            //store.js
-            fs.createReadStream(path.resolve(__dirname,'../templates/store.js'))
-            .pipe(fs.createWriteStream(path.resolve(workSpace,'src/store.js')))
-            //saga.js
-            fs.createReadStream(path.resolve(__dirname,'../templates/saga.js'))
-            .pipe(fs.createWriteStream(path.resolve(workSpace,'src/saga.js')))
+            if(toolkit){
+                //store.js
+                fs.createReadStream(path.resolve(__dirname,'../templates/store-tookit.js'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/store.js')))
+                //saga.js
+                fs.createReadStream(path.resolve(__dirname,'../templates/saga-toolkit.js'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/saga.js')))
+    
+                fs.mkdir(path.resolve(workSpace,'src/reducers'),(err)=>{
+                    if(!err){
+                        //count_reducer.js
+                        fs.createReadStream(path.resolve(__dirname,'../templates/count.js'))
+                        .pipe(fs.createWriteStream(path.resolve(workSpace,'src/reducers/count.js')))      
+                    }
+                })
+            }else{
+                //store.js
+                fs.createReadStream(path.resolve(__dirname,'../templates/store.js'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/store.js')))
+                //saga.js
+                fs.createReadStream(path.resolve(__dirname,'../templates/saga.js'))
+                .pipe(fs.createWriteStream(path.resolve(workSpace,'src/saga.js')))
+    
+                fs.mkdir(path.resolve(workSpace,'src/reducers'),(err)=>{
+                    if(!err){
+                        //count_reducer.js
+                        fs.createReadStream(path.resolve(__dirname,'../templates/count_reducer.js'))
+                        .pipe(fs.createWriteStream(path.resolve(workSpace,'src/reducers/count_reducer.js')))      
+                    }
+                })
+            }    
 
-            fs.mkdir(path.resolve(workSpace,'src/reducers'),(err)=>{
-                if(!err){
-                    //count_reducer.js
-                    fs.createReadStream(path.resolve(__dirname,'../templates/count_reducer.js'))
-                    .pipe(fs.createWriteStream(path.resolve(workSpace,'src/reducers/count_reducer.js')))      
-                }
-            })
             
             //创建dashboard.js
             fs.createReadStream(path.resolve(__dirname,'../templates/dashboard.js'))

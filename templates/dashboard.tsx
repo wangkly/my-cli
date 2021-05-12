@@ -5,7 +5,7 @@ import { RootState } from './store'
 
 const Dashboard:FC = ()=> {
 
-    let count = useSelector((state:RootState) => state.countReducer.count)
+    let count = useSelector((state:RootState) => state.counter.count)
     let dispatch = useDispatch()
 
     let [state,updateState] = useImmer({
@@ -22,7 +22,6 @@ const Dashboard:FC = ()=> {
         <div>
             <div>
                 <h1>{count}</h1>
-                <button onClick={()=>dispatch({type:'COUNT_CHANGE'})}>-</button>
                 <button onClick={()=>dispatch({type:'COUNT_CHANGE'})}>+</button>
             </div>
 
