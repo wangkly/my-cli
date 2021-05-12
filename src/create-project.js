@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import path from 'path'
 import * as ejs from 'ejs'
 import chalk from 'chalk'
+import os from 'os'
 
 
 export default function createProject(projectName,type,callback){
@@ -13,9 +14,10 @@ export default function createProject(projectName,type,callback){
         }
         // 创建src
         fs.mkdirSync(path.resolve(workSpace,'src'))
-        
+        let userInfo = os.userInfo();
+        let {username} = userInfo;
         //创建package.json
-        ejs.renderFile(path.resolve(__dirname,'../templates/package.json.ejs'),{projectName,type,version:'1.1.1',author:'wangkly'},(err,str)=>{
+        ejs.renderFile(path.resolve(__dirname,'../templates/package.json.ejs'),{projectName,type,version:'1.1.1',author:username||''},(err,str)=>{
             if(err){
                 console.log(chalk.red(`create package.json failed, err:${err}`))
             }else{
