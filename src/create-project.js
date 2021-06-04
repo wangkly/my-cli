@@ -45,8 +45,18 @@ export default function createProject(projectName,type,toolkit,callback){
         })
         
         //复制babel.config.js
-        fs.createReadStream(path.resolve(__dirname,'../templates/babel.config.js'))
-            .pipe(fs.createWriteStream(path.resolve(workSpace,'babel.config.js')))
+        // fs.createReadStream(path.resolve(__dirname,'../templates/babel.config.js'))
+        //     .pipe(fs.createWriteStream(path.resolve(workSpace,'babel.config.js')))
+
+        ejs.renderFile(path.resolve(__dirname,'../templates/babel.config.js.ejs'),{type},(err,str)=>{
+            if(err){
+                console.log(chalk.red(`create babel.config.js failed, err:${err}`))
+            }else{
+                fs.writeFileSync(path.resolve(workSpace,'babel.config.js'),str)
+                callback()
+            }
+
+        })    
         
         //html模板
         fs.createReadStream(path.resolve(__dirname,'../templates/index.ejs'))

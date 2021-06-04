@@ -2,6 +2,9 @@
 module.exports = function (api) {
     api.cache(true);
     const presets = [
+    <%_if(type == 'typescript'){_%> 
+        "@babel/preset-typescript",
+        <%_}_%>
         [
             "@babel/preset-env",
             {

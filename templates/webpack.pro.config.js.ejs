@@ -29,7 +29,7 @@ module.exports={
             {
                 test:<%_ if(type == 'typescript'){ %> /\.tsx?$/, <%}else{%> /\.js/,<%}%>
                 exclude:/node_modules/,
-                use:["babel-loader" <%if(type == 'typescript'){_%> ,"ts-loader" <%_}_%> ]
+                use:"babel-loader"
             },
             {
                 test:/.less/,
