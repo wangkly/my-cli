@@ -1,11 +1,7 @@
 import {call,put,takeEvery} from 'redux-saga/effects'
+import  type {AnyAction} from 'redux'
 
-interface Action{
-    type:string,
-    payload?:any
-}
-
-function *countLog(action:Action){
+function *countLog(action:AnyAction){
     console.log(`count changed action:${action}`)
     yield put({...action,type:'increase'})
 }

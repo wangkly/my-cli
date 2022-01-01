@@ -5,10 +5,10 @@ import { RootState } from './store'
 
 const Dashboard:FC = ()=> {
 
-    let count = useSelector((state:RootState) => state.counter.count)
-    let dispatch = useDispatch()
+    const count = useSelector((state:RootState) => state.counter.count)
+    const dispatch = useDispatch()
 
-    let [state,updateState] = useImmer({
+    const [state,updateState] = useImmer({
         value:''
     })
 

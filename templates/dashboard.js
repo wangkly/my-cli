@@ -4,10 +4,10 @@ import {useDispatch,useSelector} from 'react-redux'
 
 const Dashboard= ()=> {
 
-    let count = useSelector((state) => state.counter.count)
-    let dispatch = useDispatch()
+    const count = useSelector((state) => state.counter.count)
+    const dispatch = useDispatch()
 
-    let [state,updateState] = useImmer({
+    const [state,updateState] = useImmer({
         value:''
     })
 
