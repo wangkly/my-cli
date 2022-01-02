@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import ReactDOM from 'react-dom';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import Dashboard from './dashboard'
 import store from './store';
@@ -19,4 +18,4 @@ const App = () => {
     );
 };
 
-ReactDOM.render(<App />, document.getElementById('root'));
+export default App;

@@ -1,9 +1,12 @@
 import * as fs from 'fs'
-import path from 'path'
 import * as ejs from 'ejs'
 import chalk from 'chalk'
 import os from 'os'
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default function createProject(projectName,type,toolkit,callback){
     let currentDir = process.cwd()

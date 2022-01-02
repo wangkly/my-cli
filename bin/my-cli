@@ -1,3 +1,4 @@
 #! /usr/bin/env node
-require = require("esm")(module/*,options*/)
-module.exports = require('../src/main.js')
+import('../src/main.mjs').catch((err) => { console.error(err); process.exit(1) })
+// require = require("esm")(module/*,options*/)
+// module.exports = require('../src/main.js')

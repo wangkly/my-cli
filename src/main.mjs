@@ -1,12 +1,15 @@
-const {program} = require('commander')
-const fs = require('fs')
-const path  = require('path')
-const chalk = require('chalk');
-var inquirer = require('inquirer')
-const execa = require('execa')
-const Listr = require('listr')
+import { Command } from 'commander/esm.mjs';
+const program = new Command();
+import path from 'path'
+import chalk from 'chalk'
+import { default as inquirer} from 'inquirer';
+import {execa} from 'execa';
+import {default as Listr } from 'listr';
 
-import createProject from './create-project'
+import createProject from './create-project.mjs'
+
+import createByVite from './create-with-vite.mjs'
+
 
 program.version('0.0.1')
 program.command('init <name>').description('create a project with the name given').action((projectName)=>{
@@ -14,10 +17,17 @@ program.command('init <name>').description('create a project with the name given
   var questions=[
     {
       type:'list',
+      name:'cli',
+      message:'you can use webpack or vite',
+      choices:['webpack','vite'],
+      default:'webpack'
+    },
+    {
+      type:'list',
       name:'template',
       message:'Please choosse one tempalte',
-      choices:['javascript','typescript'],
-      default:'javascript'
+      choices:['typescript','javascript'],
+      default:'typescript'
     },
     {
       type:'confirm',
@@ -32,10 +42,12 @@ program.command('init <name>').description('create a project with the name given
       default:true
     }
   ]
-  
   inquirer.prompt(questions).then(answers => {
-    let {template,toolkit,install} = answers;
-
+    let {cli,template,toolkit,install} = answers;
+      if(cli == 'vite'){
+        createByVite(projectName,template,toolkit,install);
+        return;
+      }
       // exec('npm install',{cwd:path.resolve(process.cwd(),projectName)},()=>{
       //   console.log(`work complated`)
       // })
