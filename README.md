@@ -4,7 +4,7 @@
 
 - ## 一个简单的项目初始化脚手架，快速生成一个react项目
 - ## 可选择使用javascript | typescript,
-- ## 添加了vite的支持，可以选择使用webpack或者vite作为构建工具
+- ## 添加了vite选项，可以选择使用webpack或者vite作为构建工具
 
 <br>
 
