@@ -1,4 +1,4 @@
-import {call,put,takeEvery} from 'redux-saga/effects'
+import {put,takeEvery} from 'redux-saga/effects'
 import  type {AnyAction} from 'redux'
 
 function *countLog(action:AnyAction){

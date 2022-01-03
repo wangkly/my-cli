@@ -41,10 +41,13 @@
         "@types/react":"^17.0.5",   
         "@types/react-dom": "^17.0.3",
         "@types/react-redux": "^7.1.16",
-        "@types/react-router-dom": "^5.1.7",
+        "@types/react-router-dom": "^5.3.2",
         "typescript": "^4.2.3",
-        "@typescript-eslint/eslint-plugin": "^4.20.0",
-        "@typescript-eslint/parser": "^4.20.0",
+        "@typescript-eslint/eslint-plugin": "^5.8.1",
+        "@typescript-eslint/parser": "^5.8.1",
+        <%_}_%>
+        <%_if(type == 'javascript'){_%>
+        "@babel/eslint-parser":"^7.16.5",
         <%_}_%>
         "css-loader": "^5.0.1",
         "style-loader": "^2.0.0",

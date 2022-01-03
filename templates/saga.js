@@ -1,4 +1,4 @@
-import {call,put,takeEvery} from 'redux-saga/effects'
+import {put,takeEvery} from 'redux-saga/effects'
 
 function *countLog(action){
     console.log(`count changed action:${action}`)

@@ -15,6 +15,9 @@ module.exports = {
     <%_ if(type == 'typescript'){_%>
     "parser": "@typescript-eslint/parser",
     <%_} _%>
+    <%_ if(type == 'javascript'){_%>
+    "parser": "@babel/eslint-parser",
+    <%_} _%>
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true

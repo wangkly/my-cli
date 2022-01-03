@@ -1,4 +1,4 @@
-import React,{FC,} from 'react'
+import React from 'react'
 import {useImmer} from 'use-immer'
 import {useDispatch,useSelector} from 'react-redux'
 

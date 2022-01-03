@@ -11,30 +11,53 @@ const __dirname = path.dirname(__filename);
 const { spawn } = cp;
 
 const options = {
-  text: chalk.bold.blue("init project with vite...\n"),
+  text: chalk.bold.green("init project with vite...\n"),
   spinner: "soccerHeader",
 };
 
 const spinner = ora(options);
 
+const dependencies = [
+  "redux",
+  "react-redux",
+  "react-router",
+  "react-router-dom",
+  "@reduxjs/toolkit",
+  "redux-saga",
+  "use-immer",
+  "less",
+  "redux-devtools-extension",
+];
+
 export default function createByVite(projectName, type, toolkit, install) {
   let currentDir = process.cwd();
   let workSpace = path.resolve(currentDir, projectName);
+
+  let isYarn = true;
+  let { error } = cp.spawnSync("yarn", ["-v"]);
+  if (error) {
+    isYarn = false;
+  }
+
   let templateArgs = "react";
   if (type == "typescript") {
     templateArgs = "react-ts";
   }
   spinner.start();
-  const sp = spawn(
-    `yarn create vite ${projectName}`,
-    ["--template", templateArgs],
-    { shell: true }
-  );
+
+  const initCmd = isYarn
+    ? `yarn create vite ${projectName}`
+    : `npm init vite@latest`;
+  const args = isYarn
+    ? ["--template", templateArgs]
+    : ["--", "--template", templateArgs];
+
+  const sp = spawn(initCmd, args, { shell: true });
 
   sp.on("close", (code) => {
     if (code == 0) {
       spinner.succeed("init success with vite");
-      spinner.text = "create some files";
+      spinner.text = "copy some files...";
       spinner.start();
 
       //复制eslint prettier 配置文件
@@ -200,43 +223,48 @@ export default function createByVite(projectName, type, toolkit, install) {
         }
       }
 
-      spinner.succeed("file created success");
-      spinner.text = chalk.green.bold("install dependency with yarn...");
-      spinner.start()
-      const chp = spawn(
-        "yarn add",
-        ["redux", "react-redux", "react-router", "react-router-dom",'@reduxjs/toolkit','redux-saga','use-immer','less','redux-devtools-extension'],
-        { shell: true, cwd: path.resolve(workSpace) }
-      );
+      spinner.succeed("file copied successful");
+      spinner.text = chalk.green.bold("add dependency...");
+      spinner.start();
+
+      const addCmd = isYarn ? "yarn add" : "npm install";
+      const chp = spawn(addCmd, dependencies, {
+        shell: true,
+        cwd: path.resolve(workSpace),
+      });
       chp.on("close", (code, signal) => {
         // console.log("chp complete", code);
-        if(code == 0){
-            spinner.stop()
-            console.log(chalk.green.bold('all work done ,have a nice day!'));
+        if (code == 0) {
+          spinner.succeed("dependency added successful");
+        }
+
+        // 修改项目文件
+        if (install) {
+          spinner.text = "install dependencies...";
+          spinner.start();
+          const cmd = isYarn ? "yarn" : "npm install";
+          const sp2 = spawn(cmd, {
+            shell: true,
+            cwd: path.resolve(workSpace),
+          });
+
+          sp2.on("close", (code, signal) => {
+            if (code == 0) {
+              spinner.succeed("install dependency succeed");
+            }
+            console.log(chalk.green.bold("all work done ,have a nice day!"));
+          });
         }
       });
 
       chp.stdout.on("error", (err) => {
-          console.log(chalk.red.bold(`get err ${err}`));
+        console.log(chalk.red.bold(`get err ${err}`));
       });
-
-      // 修改项目文件
-      if (install) {
-        const sp2 = spawn("yarn", {
-          shell: true,
-          cwd: path.resolve(workSpace),
-        });
-        sp2.on("close", (code, signal) => {
-          if (code == 0) {
-            spinner.succeed("install dependency succeed");
-          }
-        });
-      }
     }
   });
 
   sp.on("error", (err) => {
     console.error(err);
-    spinner.fail('get some error')
+    spinner.fail("get some error");
   });
 }

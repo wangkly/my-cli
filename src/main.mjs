@@ -98,8 +98,8 @@ program.command('init <name>').description('create a project with the name given
       tasks.run().catch(err=>{
         console.log(chalk.red(`listr task run err:${err}`))
       }).finally(()=>{
-        execa('echo',['have a nice day!']).stdout.pipe(process.stdout)
-        // chalk.green('all done ,have a nice day!')
+        execa('echo',[`${chalk.bold.green('all work done, have a nice day!')}`]).stdout.pipe(process.stdout)
+        // chalk.bold.green('all done ,have a nice day!')
       })
 
   })
